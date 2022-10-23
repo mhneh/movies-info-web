@@ -8,14 +8,14 @@ import Loader from "@/components/Loader.vue";
 import ErrorMessage from "@/components/ErrorMessage.vue";
 
 const movieId = useRoute().params.id;
-const {loading, movie, error} = storeToRefs(useMovieStore());
-const {fetchMovieById} = useMovieStore();
+const {movie, loading, error, getMovieById} = storeToRefs(useMovieStore());
+const {fetchMovieById} = useMovieStore()
 
 const {loadingActor, actors, errorActor} = storeToRefs(useActorStore());
 const {fetchActorsByMovieId} = useActorStore();
 
 fetchMovieById(movieId);
-fetchActorsByMovieId(movieId);
+
 </script>
 
 <template>
@@ -29,7 +29,7 @@ fetchActorsByMovieId(movieId);
       <div class="row">
 
         <div class="col-md-8 text-lg-center">
-          <img class="img-fluid w-25" v-bind:src="movie.image" alt="">
+          <img class="img-fluid" style="width: 40%;" v-bind:src="movie.image" alt="">
         </div>
 
         <div class="col-md-4">

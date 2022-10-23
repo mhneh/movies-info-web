@@ -25,15 +25,22 @@ import { RouterLink, RouterView } from 'vue-router'
 
   <nav class="container bg-light mt-2 p-2 rounded">
     <div class="row justify-content-between">
-      <div class="col-7 d-flex align-items-center">Home</div>
+      <div class="col-7 d-flex align-items-center"><a href="/" class="text-dark stretched-link">Home</a></div>
       <div class="col-4">
         <div class="container">
           <div class="row justify-content-center">
             <div class="col-8">
-              <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+              <input
+                  type="search"
+                  class="form-control rounded"
+                  placeholder="Search"
+                  aria-label="Search"
+                  aria-describedby="search-addon"
+                  id="search-box"
+              />
             </div>
             <div class="col-2">
-              <button type="button" class="ml-1 btn btn-outline-success rounded">Search</button>
+              <button type="button" class="ml-1 btn btn-outline-success rounded" @click="search(searchType)">Search</button>
             </div>
           </div>
 
@@ -64,6 +71,25 @@ import { RouterLink, RouterView } from 'vue-router'
     </div>
   </footer>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      searchType: "movies"
+    }
+  },
+  methods: {
+    search: (searchType) => {
+      const expression = document.getElementById('search-box').value;
+      if (!expression) {
+        return
+      }
+      window.location.href = `/search/${searchType}/${expression}`;
+    }
+  }
+}
+</script>
 
 <style scoped>
 @media (min-width: 1024px) {

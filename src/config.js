@@ -1,3 +1,3 @@
 export default {
-    apiKey: 'k_c4hqycfb'
+    apiKey: 'k_7qn4wvr3'
 }

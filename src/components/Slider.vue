@@ -29,7 +29,7 @@ import ErrorMessage from "@/components/ErrorMessage.vue";
                   <a v-bind:href="'/movies/' + movie.id" style="width: 100%;">
                     <img
                       v-bind:src="movie.image"
-                      alt="..." style="width: 100%;">
+                      alt="..." style="width: 97%;">
                   </a>
                 </div>
               </div>

@@ -13,6 +13,7 @@ export const useMovieStore = defineStore({
         mostPopularMovies: [],
         topRatingMovies: [],
         movie: null,
+        movies: [],
         loadingInTheaterMovies: false,
         loadingMostPopularMovies: false,
         loadingTopRatingMovies: false,
@@ -20,15 +21,8 @@ export const useMovieStore = defineStore({
         error: null
     }),
     getters: {
-        getInTheaterMovieChunks: (state) => {
-            return (pageSize, totalPages) => {
-                let chunks = [];
-                for (let i = 0; i < parseInt(pageSize) * parseInt(totalPages); i += parseInt(pageSize)) {
-                    const chunk = state.inTheaterMovies.slice(i, i + parseInt(pageSize));
-                    chunks.push(chunk);
-                }
-                return chunks;
-            };
+        getMovieById: (state) => {
+            return (movieId) => [...state.topRatingMovies, ...state.mostPopularMovies, ...state.inTheaterMovies].find(m => m.id === movieId);
         }
     },
     actions: {
@@ -42,7 +36,7 @@ export const useMovieStore = defineStore({
                     this.inTheaterMovies = IN_THEATER_MOVIES.items;
                     console.log(this.inTheaterMovies);
                     this.loadingInTheaterMovies = false;
-                }, 3000);
+                }, 500);
             } catch (error) {
                 this.error = error
             } finally {
@@ -59,7 +53,7 @@ export const useMovieStore = defineStore({
                     this.mostPopularMovies = MOST_POPULAR_MOVIES.items;
                     console.log(this.mostPopularMovies);
                     this.loadingMostPopularMovies = false;
-                }, 4000);
+                }, 1000);
             } catch (error) {
                 this.error = error
             } finally {
@@ -76,7 +70,7 @@ export const useMovieStore = defineStore({
                     this.topRatingMovies = TOP_RATING_MOVIES.items;
                     console.log(this.topRatingMovies);
                     this.loadingTopRatingMovies = false;
-                }, 5000);
+                }, 2000);
             } catch (error) {
                 this.error = error
             } finally {
@@ -87,15 +81,37 @@ export const useMovieStore = defineStore({
             this.movie = null;
             this.loading = true;
             try {
-                this.movie = await fetch("https://imdb-api.com/en/API/Title/" + Config.apiKey + "/" + id + "/FullActor,FullCast,Posters,Images,Trailer,Ratings,Wikipedia,", { mode: 'no-cors'})
-                        .then(response => response.json());
-                this.loading = false;
-                console.log(this.movie);
+                // this.movie = await fetch("https://imdb-api.com/en/API/Title/" + Config.apiKey + "/" + id + "/FullActor,FullCast,Posters,Images,Trailer,Ratings,Wikipedia,", { mode: 'no-cors'})
+                //         .then(response => response.json());
+                setTimeout(() => {
+                    this.movie = [...TOP_RATING_MOVIES.items, ...MOST_POPULAR_MOVIES.items, ...IN_THEATER_MOVIES.items].find(m => m.id == id);
+                    this.loading = false;
+                    console.log(this.movie);
+                }, 3000);
             } catch (error) {
                 this.error = error
             } finally {
-                this.loading = false;
             }
-        }
+        },
+        async fetchMoviesByName(name) {
+            this.movies = null;
+            this.loading = true;
+            try {
+                // this.movies = await fetch("https://imdb-api.com/en/API/SearchMovie/" + Config.apiKey + "/" + id + "/" + name, { mode: 'no-cors'})
+                //         .then(response => response.json());
+                setTimeout(() => {
+                    if (!name || name == '') {
+                        return;
+                    }
+
+                    this.movies = [...TOP_RATING_MOVIES.items, ...MOST_POPULAR_MOVIES.items, ...IN_THEATER_MOVIES.items].filter(m => m.title.toUpperCase().includes(name.toUpperCase()));
+                    this.loading = false;
+                    console.log(this.movies);
+                }, 1000);
+            } catch (error) {
+                this.error = error
+            } finally {
+            }
+        },
     }
 });

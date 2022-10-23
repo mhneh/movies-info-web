@@ -19,7 +19,6 @@ export const useActorStore = defineStore({
             try {
                 this.actors = await fetch('https://imdb-api.com/en/API/FullCast/' + Config.apiKey + "/" + movieId, { mode: 'no-cors'})
                     .then((response) => response.json())
-                console.log(this.actors);
                 this.loading = false;
             } catch (error) {
                 this.errorActor = error;
