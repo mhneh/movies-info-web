@@ -23,14 +23,23 @@ import ErrorMessage from "@/components/ErrorMessage.vue";
           </div>
 
           <div class="carousel-inner px-5">
-            <div class="carousel-item" :class="{ active: index == 0}" v-for="(chunk, index) in movieChunks">
-              <div class="row d-flex justify-content-center">
-                <div class="col-4 p-0 d-flex justify-content-center" v-for="movie in chunk">
-                  <a v-bind:href="'/movies/' + movie.id" style="width: 100%;">
+            <div class="carousel-item" :class="{ active: index == 0}" v-for="(chunk, index) in movieChunks" :key="index">
+              <div class="row d-flex justify-content-center h-100">
+                <div class="col-4 p-0 d-flex justify-content-center h-100" v-for="movie in chunk" :key="movie.id">
+                  <a
+                      class="img-default-size"
+                      v-bind:href="'/movies/' + movie.id">
                     <img
+
                       v-bind:src="movie.image"
-                      alt="..." style="width: 97%;">
+                      alt="...">
+                    <div class="carousel-caption text-warning fw-bold">
+                      <h5>Name: {{ movie.fullTitle }}</h5>
+                      <p>Rated: {{movie.imDbRating}}</p>
+                      <p>Length: {{movie.runtimeStr}}</p>
+                    </div>
                   </a>
+
                 </div>
               </div>
             </div>
@@ -60,7 +69,8 @@ export default {
   data() {
     return {
       id: this.genSliderId(this.title),
-      pagination: this.genPagination(this.totalPages)
+      pagination: this.genPagination(this.totalPages),
+      imageEnlarged: false,
     }
   },
   mounted() {
@@ -84,7 +94,14 @@ export default {
         pagination.push(i);
       }
       return pagination;
-    }
+    },
+    enlargeImage(event) {
+      console.log("enlarged");
+      this.imageEnlarged = true;
+    },
+    shrinkImage() {
+      this.imageEnlarged = false;
+    },
   }
 }
 </script>
@@ -119,6 +136,27 @@ export default {
 .carousel-indicators {
   top: -5px;
   left: auto;
+}
+
+.img-default-size {
+  width: fit-content;
+  overflow: hidden;
+}
+
+.img-default-size img {
+  height: 500px;
+  transition: all 0.2s;
+}
+
+.img-default-size:hover {
+  overflow: visible;
+}
+
+.img-default-size:hover img {
+  height: 600px;
+  transition: all 0.2s;
+  z-index: 999;
+
 }
 
 @media (min-width: 768px) {

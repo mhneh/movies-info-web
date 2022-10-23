@@ -87,7 +87,7 @@ export const useMovieStore = defineStore({
                     this.movie = [...TOP_RATING_MOVIES.items, ...MOST_POPULAR_MOVIES.items, ...IN_THEATER_MOVIES.items].find(m => m.id == id);
                     this.loading = false;
                     console.log(this.movie);
-                }, 3000);
+                }, 1500);
             } catch (error) {
                 this.error = error
             } finally {
@@ -97,19 +97,38 @@ export const useMovieStore = defineStore({
             this.movies = null;
             this.loading = true;
             try {
-                // this.movies = await fetch("https://imdb-api.com/en/API/SearchMovie/" + Config.apiKey + "/" + id + "/" + name, { mode: 'no-cors'})
+                // this.movies = await fetch("https://imdb-api.com/en/API/SearchMovie/" + Config.apiKey + "/" + name, { mode: 'no-cors'})
                 //         .then(response => response.json());
                 setTimeout(() => {
                     if (!name || name == '') {
                         return;
                     }
 
-                    this.movies = [...TOP_RATING_MOVIES.items, ...MOST_POPULAR_MOVIES.items, ...IN_THEATER_MOVIES.items].filter(m => m.title.toUpperCase().includes(name.toUpperCase()));
+                    this.movies = [...TOP_RATING_MOVIES.items, ...MOST_POPULAR_MOVIES.items, ...IN_THEATER_MOVIES.items]
+                        .filter(m => m.title.toUpperCase().includes(name.toUpperCase()));
                     this.loading = false;
                     console.log(this.movies);
                 }, 1000);
             } catch (error) {
                 this.error = error
+            } finally {
+            }
+        },
+        async fetchMoviesByActorName(actorName) {
+            this.movies = null;
+            this.loading = true;
+            try {
+                const actor = await fetch("https://imdb-api.com/en/API/SearchName/" + Config.apiKey + "/" + actorName)
+                        .then(response => response.json());
+                const information = await fetch("https://imdb-api.com/en/API/Name/" + Config.apiKey + "/" + actor.results[0].id)
+                        .then(response => response.json());
+                this.movies = information.knownFor;
+                console.log("Actor: ", actor);
+                console.log("Info: ", information);
+                console.log("Movies: ", this.movies);
+            } catch (error) {
+                this.error = error
+                this.loading = false;
             } finally {
             }
         },

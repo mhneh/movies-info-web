@@ -8,7 +8,6 @@ const {
   loadingMostPopularMovies, mostPopularMovies,
   loadingTopRatingMovies, topRatingMovies
 } = storeToRefs(useMovieStore());
-const {fetchInTheaterMovies, fetchMostPopularMovies, fetchTopRatingMovies} = useMovieStore();
 
 function chunk(movies, pageSize, totalPages) {
   let chunks = [];
@@ -19,9 +18,7 @@ function chunk(movies, pageSize, totalPages) {
   return chunks;
 }
 
-fetchInTheaterMovies();
-fetchMostPopularMovies();
-fetchTopRatingMovies();
+
 </script>
 
 <template>

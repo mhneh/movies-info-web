@@ -1,26 +1,17 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import {useMovieStore} from "@/stores/movie";
+import Controller from "@/components/Controller.vue";
+
+const {fetchInTheaterMovies, fetchMostPopularMovies, fetchTopRatingMovies} = useMovieStore();
+fetchInTheaterMovies();
+fetchMostPopularMovies();
+fetchTopRatingMovies();
 </script>
 
 <template>
   <header class="container bg-light mt-1 p-2 rounded">
-    <div class="row justify-content-between">
-      <div class="col-2 d-flex align-items-center">20120075</div>
-      <div class="col-6 text-center"><h1>Movies Info</h1></div>
-      <div class="col-2">
-        <div class="container">
-          <div class="row">
-            <div class="col-12 d-flex justify-content-end">Key API</div>
-            <div class="col-12 d-flex justify-content-end">
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Dark Theme</label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Controller />
   </header>
 
   <nav class="container bg-light mt-2 p-2 rounded">
@@ -40,7 +31,7 @@ import { RouterLink, RouterView } from 'vue-router'
               />
             </div>
             <div class="col-2">
-              <button type="button" class="ml-1 btn btn-outline-success rounded" @click="search(searchType)">Search</button>
+              <button type="button" class="ml-1 btn btn-outline-success rounded" @click="search()">Search</button>
             </div>
           </div>
 
@@ -49,43 +40,29 @@ import { RouterLink, RouterView } from 'vue-router'
     </div>
   </nav>
 
-  <RouterView />
+  <RouterView changeS />
 
   <footer class="container bg-light p-2 rounded">
-    <div class="row justify-content-between">
-      <div class="col-2 d-flex align-items-center">20120075</div>
-      <div class="col-6 text-center"><h1>Movies Info</h1></div>
-      <div class="col-2">
-        <div class="container">
-          <div class="row">
-            <div class="col-12 d-flex justify-content-end">Key API</div>
-            <div class="col-12 d-flex justify-content-end">
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Dark Theme</label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Controller />
   </footer>
 </template>
 
 <script>
+
 export default {
   data() {
     return {
-      searchType: "movies"
     }
   },
   methods: {
-    search: (searchType) => {
+    search: () => {
       const expression = document.getElementById('search-box').value;
       if (!expression) {
         return
       }
-      window.location.href = `/search/${searchType}/${expression}`;
+      const url = window.location.href;
+      const type = url.includes("actors") ? "actors" : "movies";
+      window.location.href = `/search/${type}/${expression}`;
     }
   }
 }
