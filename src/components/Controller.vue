@@ -12,7 +12,13 @@ import Config from "@/config";
           <div class="col-12 d-flex justify-content-end">{{Config.apiKey}}</div>
           <div class="col-12 d-flex justify-content-end">
             <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+              <input
+                  class="form-check-input"
+                  type="checkbox"
+                  role="switch"
+                  id="flexSwitchCheckDefault"
+                  @change="toggleTheme"
+              >
               <label class="form-check-label" for="flexSwitchCheckDefault">Dark Theme</label>
             </div>
           </div>

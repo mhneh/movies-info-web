@@ -12,16 +12,19 @@ const router = createRouter({
     {
       path: '/search/:searchType/:expression',
       name: 'search',
-      component: () => import('../views/SearchView.vue')
+      props: true,
+      component: () => import('../views/SearchView.vue'),
     },
     {
       path: '/actors/:id',
       name: 'actors',
+      props: true,
       component: () => import('../views/ActorDetailView.vue')
     },
     {
       path: '/movies/:id',
       name: 'movies',
+      props: true,
       component: () => import('../views/MovieDetailView.vue')
     }
   ]

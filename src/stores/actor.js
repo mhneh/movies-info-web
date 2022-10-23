@@ -24,7 +24,7 @@ export const useActorStore = defineStore({
                 console.log("Single Actor: ", this.actor);
             } catch (error) {
                 this.errorActor = error;
-                this.loadingActor = true;
+                this.loadingActor = false;
             } finally {
             }
         },

@@ -7,10 +7,10 @@ import ErrorMessage from "@/components/ErrorMessage.vue";
 <template>
   <Loader v-if="loading"/>
   <ErrorMessage v-if="error" v-bind:error="error"/>
-  <div v-if="movieChunks" class="container-fluid p-0">
+  <div v-if="movieChunks" class="container-fluid p-0" :class="{'text-dark': theme == 'light', 'text-light': theme == 'dark'}">
     <div class="row mt-5 mb-5">
       <div class="col-sm-12">
-        <div class="text-black"><h5>{{title}}</h5></div>
+        <div><h5>{{title}}</h5></div>
 
         <div v-bind:id="id" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-indicators" v-if="hasPagination == 'true'">
@@ -64,7 +64,7 @@ export default {
   name: "Slider",
   props: [
     'totalPages', 'pageSize', 'hasPagination', 'title', 'loading', 'error',
-    'movieChunks'
+    'movieChunks', 'theme'
   ],
   data() {
     return {

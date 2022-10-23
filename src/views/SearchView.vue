@@ -27,12 +27,12 @@ if (searchType == 'movies') {
 <template>
   <Loader v-if="loading"/>
 
-  <main>
+  <main class="vh-100" :class="{'bg-light text-dark': theme == 'light', 'bg-secondary text-light': theme == 'dark'}">
     <div class="container">
       <div class="row mt-5 mb-5">
         <div class="col-sm-12">
           <div class="container-fluid">
-            <div class="col-3 bg-light rounded px-5 py-2">
+            <div class="col-3 rounded px-5 py-2" :class="{'bg-light text-dark': theme == 'light', 'bg-dark text-light': theme == 'dark'}">
               <h3>Search Type</h3>
               <div class="form-check">
                 <input :checked="searchType == 'movies'" @click="changeSearchType('movies', expression)" class="form-check-input" type="radio" value="movies" name="search-type" id="movies">
@@ -55,10 +55,10 @@ if (searchType == 'movies') {
 
       <div class="row" v-if="movies">
         <div class="col-sm-12">
-          <div class="container-fluid">
+          <div class="container-fluid vh-100">
             <div class="row">
-              <div class="col-sm-4 mb-3  d-flex justify-content- align-items-stretch" v-for="movie in paginate(movies, page, pageSize)">
-                <div class="card w-100">
+              <div class="col-sm-4 mb-3  d-flex justify-content-center align-items-stretch"  v-for="movie in paginate(movies, page, pageSize)">
+                <div class="card w-100" :class="{'bg-light text-dark': theme == 'light', 'bg-dark text-light': theme == 'dark'}">
                   <a v-bind:href="'/movies/' + movie.id" class="text-decoration-none">
                   <img v-bind:src="movie.image" class="card-img-top" alt="...">
                   <div class="card-body">
@@ -100,6 +100,7 @@ if (searchType == 'movies') {
 
 <script>
 export default {
+  props: ['theme'],
   data() {
     return {
       page: 0,

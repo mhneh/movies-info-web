@@ -90,6 +90,7 @@ export const useMovieStore = defineStore({
                 }, 1500);
             } catch (error) {
                 this.error = error
+                this.loading = false;
             } finally {
             }
         },
