@@ -1,8 +1,13 @@
 <script setup>
+import Loader from "@/components/Loader.vue";
+import ErrorMessage from "@/components/ErrorMessage.vue";
+
 </script>
 
 <template>
-  <div class="container-fluid p-0">
+  <Loader v-if="loading"/>
+  <ErrorMessage v-if="error" v-bind:error="error"/>
+  <div v-if="movieChunks" class="container-fluid p-0">
     <div class="row mt-5 mb-5">
       <div class="col-sm-12">
         <div class="text-black"><h5>{{title}}</h5></div>
@@ -18,10 +23,14 @@
           </div>
 
           <div class="carousel-inner px-5">
-            <div class="carousel-item" :class="{ active: index == 0}" v-for="(chunk, index) in films">
+            <div class="carousel-item" :class="{ active: index == 0}" v-for="(chunk, index) in movieChunks">
               <div class="row d-flex justify-content-center">
-                <div class="col-4 p-0 d-flex justify-content-center" v-for="film in chunk">
-                  <img v-bind:src="film" alt="..." style="width: 97%;">
+                <div class="col-4 p-0 d-flex justify-content-center" v-for="movie in chunk">
+                  <a v-bind:href="'/movies/' + movie.id" style="width: 100%;">
+                    <img
+                      v-bind:src="movie.image"
+                      alt="..." style="width: 100%;">
+                  </a>
                 </div>
               </div>
             </div>
@@ -41,44 +50,33 @@
 </template>
 
 <script>
+
 export default {
   name: "Slider",
-  props: ['totalPages', 'pageSize', 'hasPagination', 'title'],
+  props: [
+    'totalPages', 'pageSize', 'hasPagination', 'title', 'loading', 'error',
+    'movieChunks'
+  ],
   data() {
     return {
-      id: this.genId(this.title),
-      films: this.genFilms(),
+      id: this.genSliderId(this.title),
       pagination: this.genPagination(this.totalPages)
     }
   },
   mounted() {
-    console.log(this.totalPages);
+
   },
   methods: {
-    genId: function(title) {
+    genSliderId: function(title) {
       if (!title) {
         const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-        let result = '';
-        const charactersLength = characters.length;
+        let sliderId = '';
         for ( let i = 0; i < 6; i++ ) {
-          result += characters.charAt(Math.floor(Math.random() * charactersLength));
+          sliderId += characters.charAt(Math.floor(Math.random() * characters.length));
         }
-        return result;
+        return sliderId;
       }
       return title.replace(/\s+/g, '');
-    },
-    genFilms: function() {
-      let test = [];
-      for (let i = 0; i < parseInt(this.pageSize) * parseInt(this.totalPages); ++i) {
-        test.push("../assets/image.jpg");
-      }
-
-      let res = [];
-      for (let i = 0; i < test.length; i += parseInt(this.pageSize)) {
-        const chunk = test.slice(i, i + parseInt(this.pageSize));
-        res.push(chunk);
-      }
-      return res;
     },
     genPagination: function(size) {
       let pagination = [];
